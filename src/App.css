@@ -1,3 +1,17 @@
+.color-changing-text-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.floating-controls {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
 .App {
   text-align: center;
 }

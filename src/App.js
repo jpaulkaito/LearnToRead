@@ -1,78 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import Header from './components/header';
+import ColorChangingText from './components/ColorChangingText';
 
-const ColorChangingText = ({ text, fontSize, onFontSizeChange }) => {
-  const words = text.split(' ');
-
-  const [currentColorIndex, setCurrentColorIndex] = useState(0);
-
-  const changeColor = () => {
-    setCurrentColorIndex((prevIndex) => (prevIndex + 1) % words.length);
-  };
-
-  const goBackToFirstWord = () => {
-    setCurrentColorIndex(0);
-  };
-
-  const goBackToPreviousWord = () => {
-    setCurrentColorIndex((prevIndex) => (prevIndex - 1 + words.length) % words.length);
-  };
-
-  const handleFontSizeChange = (e) => {
-    onFontSizeChange(e.target.value);
-  };
-
-  const readHighlightedWord = () => {
-    const highlightedWord = words[currentColorIndex];
-    speakText(highlightedWord);
-  };
-
-  const speakText = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(utterance);
-  };
-
-  useEffect(() => {
-    // Clean up speech synthesis on component unmount
-    return () => {
-      window.speechSynthesis.cancel();
-    };
-  }, []);
-
-  return (
-    <div>
-      <div style={{ fontSize: `${fontSize}px`, backgroundColor: 'white' }}>
-        {words.map((word, index) => (
-          <span
-            key={index}
-            style={{
-              color: index === currentColorIndex ? 'red' : 'black',
-              backgroundColor: index === currentColorIndex ? 'yellow' : 'transparent',
-            }}
-          >
-            {word}{' '}
-          </span>
-        ))}
-      </div>
-      <br />
-      <button onClick={changeColor}>Next Word</button>
-      <button onClick={readHighlightedWord}>Read The Word</button>
-      <button onClick={goBackToPreviousWord}>Previous Word</button>
-      <button onClick={goBackToFirstWord}>Go Back to First Word</button>
-      <br />
-      <label htmlFor="fontSizeDropdown">Font Size:</label>
-      <select id="fontSizeDropdown" onChange={handleFontSizeChange} value={fontSize}>
-        <option value="12">12px</option>
-        <option value="16">16px</option>
-        <option value="20">20px</option>
-        <option value="24">24px</option>
-        <option value="36">36px</option>
-        <option value="48">48px</option>
-        <option value="72">72px</option>
-      </select>
-    </div>
-  );
-};
 
 function App() {
   const myText =
@@ -80,14 +10,13 @@ function App() {
   const [fontSize, setFontSize] = useState(36);
 
   const handleFontSizeChange = (newSize) => {
-    setFontSize(parseInt(newSize, 10));
+    setFontSize(parseInt(newSize));
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <ColorChangingText text={myText} fontSize={fontSize} onFontSizeChange={handleFontSizeChange} />
-      </header>
+      <Header />
+      <ColorChangingText text={myText} fontSize={fontSize} onFontSizeChange={handleFontSizeChange} />
     </div>
   );
 }

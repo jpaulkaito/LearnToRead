@@ -1,22 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import Header from './components/header';
+import Header from './components/Header';
 import ColorChangingText from './components/ColorChangingText';
-
+import { baseUrl } from './api/baseURL';
+import Loading from './components/Loading';
 
 function App() {
-  const myText =
-    "Once upon a time in a colorful forest, there was a little bunny named Benny. Benny loved to hop around and explore the magical world of the forest. One sunny day, Benny met a friendly squirrel named Sammy. Sammy and Benny decided to go on an exciting adventure together. They hopped over fluffy clouds, danced with butterflies, and even had a chat with a wise old owl. The forest was full of giggles and laughter. As the sun started to set, Benny and Sammy found a cozy spot under a big, sparkling mushroom. They sat down and shared a tasty snack of crunchy carrots and juicy berries. The stars twinkled above them, and the moon smiled down, making the night feel magical. With full tummies and happy hearts, Benny and Sammy said goodnight to their forest friends and snuggled into a soft bed of leaves. As they closed their eyes, they whispered sweet dreams to each other. And so, in the quiet and peaceful forest, Benny and Sammy drifted off to sleep, knowing that tomorrow would bring more adventures and new friends to meet. The end.";
+  const [myTextData, setMyTextData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [fontSize, setFontSize] = useState(36);
 
   const handleFontSizeChange = (newSize) => {
     setFontSize(parseInt(newSize));
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(baseUrl);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setMyTextData(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
-      <Header />
-      <ColorChangingText text={myText} fontSize={fontSize} onFontSizeChange={handleFontSizeChange} />
+      <Header mytext={myTextData[0]?.mytext || ''} />
+      {loading ? (
+        <Loading />
+        ) : (
+        <ColorChangingText text={myTextData[0]?.mytext || ''} fontSize={fontSize} onFontSizeChange={handleFontSizeChange} />
+      )}
+
     </div>
   );
 }

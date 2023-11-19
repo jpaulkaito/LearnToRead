@@ -74,7 +74,13 @@ const ColorChangingText = ({ text, fontSize, onFontSizeChange }) => {
                                                 </Button>
                                                 <br />
                                                 <label htmlFor="fontSizeDropdown">Font Size:</label>
-                                                <select className="form-select" id="fontSizeDropdown" onChange={handleFontSizeChange} value={fontSize}>
+                                                <select 
+                                                        className="form-select" 
+                                                        id="fontSizeDropdown" 
+                                                        onChange={handleFontSizeChange} 
+                                                        value={fontSize} 
+                                                        style={{ width: '20%', margin: 'auto' }}
+                                                >
                                                         {Array.from({ length: 25 }, (_, index) => index * 3 + 12).map((value) => (
                                                                 <option key={value} value={value.toString()}>
                                                                         {value}px

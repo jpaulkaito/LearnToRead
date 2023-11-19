@@ -28,6 +28,11 @@ const ColorChangingText = ({ text, fontSize, onFontSizeChange }) => {
                 speakText(highlightedWord);
         };
 
+        const readAllText = () => {
+                const fullText = words.join(' ');
+                speakText(fullText);
+        };
+
         const speakText = (text) => {
                 const utterance = new SpeechSynthesisUtterance(text);
                 window.speechSynthesis.speak(utterance);
@@ -69,16 +74,20 @@ const ColorChangingText = ({ text, fontSize, onFontSizeChange }) => {
                                                 <Button className="btn btn-primary" onClick={goBackToPreviousWord}>
                                                         Previous Word
                                                 </Button>
+                                                <br />
+                                                <Button className="btn btn-success" onClick={readAllText}>
+                                                        Read All
+                                                </Button>
                                                 <Button className="btn btn-warning" onClick={goBackToFirstWord}>
                                                         Go Back to First Word
                                                 </Button>
                                                 <br />
                                                 <label htmlFor="fontSizeDropdown">Font Size:</label>
-                                                <select 
-                                                        className="form-select" 
-                                                        id="fontSizeDropdown" 
-                                                        onChange={handleFontSizeChange} 
-                                                        value={fontSize} 
+                                                <select
+                                                        className="form-select"
+                                                        id="fontSizeDropdown"
+                                                        onChange={handleFontSizeChange}
+                                                        value={fontSize}
                                                         style={{ width: '20%', margin: 'auto' }}
                                                 >
                                                         {Array.from({ length: 25 }, (_, index) => index * 3 + 12).map((value) => (
